@@ -55,6 +55,9 @@ Este proyecto proporciona una aplicación web para la gestión de usuarios y adm
 | `password`  | VARCHAR(255)  | Contraseña encriptada        |
 | `created_at`| TIMESTAMP     | Fecha y hora de creación     |
 
+![image](https://github.com/UrielP-Dev/FinalProjectPW/assets/87452680/68fccaae-f908-469a-b350-df0a908a3851)
+
+
 ## Tecnologías
 
 - PHP
