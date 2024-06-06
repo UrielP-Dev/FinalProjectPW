@@ -45,9 +45,9 @@
 <div class="fondo-secundario"></div>
 
 <div class="modal-container">
-  <div class="formulario">
+  <div class="formulario">6
     <h1 class="text-center mb-4">Formulario de Registro</h1>
-    <form id="userForm" action="process_register.php" method="post">
+    <form id="userForm" action="Process_register.php" method="post">
       <div class="mb-3">
         <label for="nombre" class="form-label">Nombre</label>
         <input type="text" class="form-control" id="nombre" name="nombre" required>
