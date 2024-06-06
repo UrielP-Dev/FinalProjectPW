@@ -35,7 +35,7 @@
       
     </div>
 
-<!-- Modal Integrantes-->
+              <!-- Modal Integrantes-->
               <div class="modal fade" id="integrantesmodal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">
