@@ -9,28 +9,69 @@
     <title>Home</title>
 </head>
 <body>
-<div class="b-example-divider"></div>
 
-<header class="p-3 bg-dark text-white">
+
+<header class="p-3 mb-2 bg-primary text-primary-emphasis">
   <div class="container">
     <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-      <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-        <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>
-      </a>
-
-      <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-        <li><a href="#" class="nav-link px-2 text-secondary">Home</a></li>
-      </ul>
-
-      
-
-      <div class="text-end">
+      <div class="text-end order-lg-0 order-1">
+        <img src="/resoures/logo.jpg" alt="logo" class="ml-2" style="height: 50px;">
         <button type="button" class="btn btn-outline-light me-2">Login</button>
-        <button type="button" class="btn btn-warning">Sign-up</button>
+        <button type="button" class="btn btn-outline-warning me-2">Sign-up</button>
       </div>
+      <div class="btn-group" style="float: right;">
+          <button type="button" class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            Acerca de Nosotros
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item"  data-bs-toggle="modal" data-bs-target="#integrantesmodal">Integrantes</a></li>
+            <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#objetivomodal">Objetivo</a></li>
+          </ul>
+        </div>
     </div>
   </div>
 </header>
-</div>
+    <div class="jumbotron" style="background-image: url('/resoures/fondo.jpg');background-size: cover;background-position: center;background-repeat: no-repeat;height: 80vh;">
+      
+    </div>
+
+<!-- Modal Integrantes-->
+              <div class="modal fade" id="integrantesmodal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="ModalLabel">Integrantes</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      Antonio Uriel Perez Pichardo <br>
+                      Bruno Mejía Maya
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Modal Objetivo-->
+              <div class="modal fade" id="objetivomodal" tabindex="-1" aria-labelledby="ModalLabel1" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="ModalLabel1">Objetivo</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                    El objetivo principal de nuestra página web es proporcionar información completa y actualizada sobre los diferentes videojuegos existentes.
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+
 </body>
 </html>
