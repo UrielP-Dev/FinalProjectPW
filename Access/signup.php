@@ -45,7 +45,7 @@
 <div class="fondo-secundario"></div>
 
 <div class="modal-container">
-  <div class="formulario">6
+  <div class="formulario">
     <h1 class="text-center mb-4">Formulario de Registro</h1>
     <form id="userForm" action="Process_register.php" method="post">
       <div class="mb-3">

@@ -24,7 +24,7 @@
     </style>
     <script>
         setTimeout(function(){
-            window.location.href = 'login.php'; // Redirige al login después de 5 segundos
+            window.location.href = '/index.php'; // Redirige al login después de 5 segundos
         }, 5000);
     </script>
 </head>
