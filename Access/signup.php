@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Formulario de Registro</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
   <style>
     /* Estilos personalizados para el modal */
     .modal-container {
@@ -46,7 +47,7 @@
 <div class="modal-container">
   <div class="formulario">
     <h1 class="text-center mb-4">Formulario de Registro</h1>
-    <form action="procesar_registro.php" method="post">
+    <form id="userForm" action="process_register.php" method="post">
       <div class="mb-3">
         <label for="nombre" class="form-label">Nombre</label>
         <input type="text" class="form-control" id="nombre" name="nombre" required>
@@ -69,6 +70,37 @@
     </form>
   </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+<script>
+document.getElementById('userForm').addEventListener('submit', function(event) {
+  event.preventDefault(); // Evita el envío del formulario
+  var formData = new FormData(this);
+  fetch(this.action, {
+    method: 'POST',
+    body: formData
+  }).then(response => response.text())
+    .then(result => {
+      if (result.includes('Success')) { // Ajusta esto según el mensaje que devuelva tu PHP en caso de éxito
+        Swal.fire({
+          icon: 'success',
+          title: 'Registro exitoso',
+          text: 'El Usuario ha sido registrado correctamente',
+          showConfirmButton: false,
+          timer: 2000
+        }).then(() => {
+          window.location.href = 'SignUpSuccess.php'; // Redirige después de mostrar la animación
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Hubo un problema al registrar el usuario'
+        });
+      }
+    });
+});
+</script>
 
 </body>
 </html>

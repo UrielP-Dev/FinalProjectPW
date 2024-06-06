@@ -2,10 +2,10 @@
 // Incluye los archivos necesarios
 include '../Context/orm.php';
 include '../DataBase/Connection.php';
-include 'users.php';
+include 'admin.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Recibe los datos del formulario
+    
     $nombre = $_POST['nombre'];
     $apellido = $_POST['apellido'];
     $email = $_POST['email'];
@@ -15,27 +15,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $database = new Database();
     $db = $database->getConnection();
 
-    // Crear una instancia de la clase User
-    $user = new User($db);
+    // Crear una instancia de la clase Admin
+    $admin = new Admin($db);
 
     // Datos a insertar
     $data = [
         'nombre' => $nombre,
         'apellido' => $apellido,
         'email' => $email,
-        'password' => $password
+        'password' => $password,
     ];
 
-    // Insertar los datos en la tabla users
-    $succes = $user->insert($data);
+    // Insertar los datos en la tabla admins
+    $success = $admin->insert($data);
 
-    if ($succes) {
-        header("Location: SignUpSuccess.php");
-        exit();
+    if ($success) {
+        echo "Success"; // Mensaje que el JavaScript interpretará como éxito
     } else {
-        echo "Error al registrar el usuario.";
+        echo "Error"; // Mensaje que el JavaScript interpretará como error
     }
 } else {
-    echo "Método de solicitud no válido.";
+    echo "Invalid request method.";
 }
-
+?>
