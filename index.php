@@ -16,8 +16,8 @@
     <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
       <div class="text-end order-lg-0 order-1">
         <img src="/resoures/logo.jpg" alt="logo" class="ml-2" style="height: 50px;">
-        <button type="button" class="btn btn-outline-light me-2">Login</button>
-        <button type="button" class="btn btn-outline-warning me-2">Sign-up</button>
+        <button type="button" class="btn btn-outline-light me-2" onclick="window.location.href = '/Access/login.php';">Login</button>
+        <button type="button" class="btn btn-outline-warning me-2" onclick="window.location.href = '/Access/signup.php';">Sign-up</button>
       </div>
       <div class="btn-group" style="float: right;">
           <button type="button" class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
