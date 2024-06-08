@@ -17,7 +17,12 @@ class orm{
         $stm->execute();
         return $stm->fetchAll();
     }
-
+    public function getHalf() {
+        $sql = "SELECT id, titulo, desarrollador, fecha_lanzamiento FROM {$this->table}" ;
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
     function getById($id){
         $sql="SELECT * FROM {$this->table} WHERE id={$id}";
         $stm= $this->db->prepare($sql);

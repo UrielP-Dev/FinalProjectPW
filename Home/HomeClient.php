@@ -10,6 +10,7 @@ session_start();
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Home-client</title>
 </head>
 <body>
@@ -27,27 +28,51 @@ session_start();
     </div>
   </div>
 </header>
+<div class="container mt-5">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Desarrollador</th>
+                    <th>Fecha de Lanzamiento</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="table-group-divider">
+                <!-- Filas se insertarán aquí -->
+            </tbody>
+        </table>
+    </div>
 
-<div class="table">
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">Nombre</th>
-      <th scope="col">Desarrollador</th>
-      <th scope="col">Fecha Lanzamiento</th>
-      <th scope="col">Detalles</th>
-    </tr>
-  </thead>
-  <tbody class="table-group-divider">
+    <div class="modal fade" id="infoUsumodal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="ModalLabel">Información del Juego</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modal-body-content">
+                    <!-- Información del juego se mostrará aquí -->
+                </div>
+            </div>
+        </div>
+    </div>
 
-  <script>
+    <script>
         $(document).ready(function() {
             $.ajax({
-                url: '/videogames/getAllGames.php',
+                url: '../videogames/getAllGames.php', // Asegúrate de que la ruta es correcta
                 method: 'GET',
                 success: function(response) {
-                    var data = JSON.parse(response);
+                    console.log(response); // Depura la respuesta
+                    var data;
+                    try {
+                        data = JSON.parse(response);
+                    } catch (e) {
+                        console.error("Error parsing JSON:", e);
+                        return;
+                    }
                     var games = data.games; // Accede a la lista de juegos
                     var tableBody = $('#table-group-divider');
                     tableBody.empty(); // Limpia el cuerpo de la tabla
@@ -58,19 +83,57 @@ session_start();
                                   '<td>' + game.titulo + '</td>' +
                                   '<td>' + game.desarrollador + '</td>' +
                                   '<td>' + game.fecha_lanzamiento + '</td>' +
-                                  '<td>' + '<button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#infoUsumodal">Detalles</button>' + '</td>' +
+                                  '<td>' + '<button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#infoUsumodal" data-id="' + game.id + '">Detalles</button>' + '</td>' +
                                   '</tr>';
                         tableBody.append(row);
+                    });
+// Agregar evento click a los botones de detalles
+$('#table-group-divider').on('click', 'button[data-bs-toggle="modal"]', function() {
+                        var gameId = $(this).data('id');
+                        $.ajax({
+                            url: '../videogames/getIdgame.php',
+                            type: 'GET',
+                            data: { id: gameId },
+                            dataType: 'json',
+                            success: function(data) {
+                                console.log(data); // Depura la respuesta
+                                var gameData;
+                                
+                                if (data.error) {
+                                    console.log(data.error);
+                                } else {
+                                    // Manejar los datos de juego recibidos
+                                    console.log(data.game);
+                                gameData=data.game;
+                                if (gameData.error) {
+                                    $('#modal-body-content').html('<p>' + gameData.error + '</p>');
+                                } else {
+                                    var gameDetails = '<p><strong>ID:</strong> ' + gameData.id + '</p>' +
+                                                      '<p><strong>Título:</strong> ' + gameData.titulo + '</p>' +
+                                                      '<p><strong>Desarrollador:</strong> ' + gameData.desarrollador + '</p>' +
+                                                      '<p><strong>Fecha de Lanzamiento:</strong> ' + gameData.fecha_lanzamiento + '</p>' +
+                                                      '<p><strong>Género:</strong> ' + gameData.genero + '</p>' +
+                                                      '<p><strong>Plataformas:</strong> ' + gameData.plataformas + '</p>' +
+                                                      '<p><strong>Puntuación:</strong> ' + gameData.puntuacion + '</p>' +
+                                                      '<p><strong>Descripción:</strong> ' + gameData.descripcion + '</p>';
+                                    $('#modal-body-content').html(gameDetails);
+                                }}
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                console.error("Error: " + textStatus + " - " + errorThrown);
+                                $('#modal-body-content').html('<p>Error al cargar los detalles del juego.</p>');
+                            }
+                        });
                     });
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.error("Error: " + textStatus + " - " + errorThrown);
+                    console.error("Response text:", jqXHR.responseText);
                 }
             });
         });
     </script>
-  </tbody>
-</table>
+    </script>
 </div>
 
                 <!-- Modal Info usuario-->
@@ -82,32 +145,7 @@ session_start();
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                    <?php
-                        include '../Context/orm.php';
-                        include '../DataBase/Connection.php';
-                        include '../Access/users.php';
-
-                        $db1 = new Database();
-                        $encontrado = $db1->verificarDriver();
-
-                        if ($encontrado) {
-                            $cnn = $db1->getConnection();
-                            $UserModelo = new user($cnn);
-                            $id_user = $_SESSION['user_id'];
-                            $user = $UserModelo->getById($id_user);
-                            if ($user == null) {
-                                print("No hay un usuario con ese ID:");
-                            } else {
-                                print("================<br>");
-                                print("Usuario <br>");
-                                print("================<br>");
-                                print("ID: " . $user['id'] . "<br>");
-                                print("Nombre: " . $user['nombre'] . "<br>");
-                                print("Apellido: " . $user['apellido'] . "<br>");
-                                print("Email: " . $user['email'] . "<br>");
-                            }
-                        }
-                        ?>
+                    
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>

@@ -1,7 +1,7 @@
 <?php
 include '../Context/orm.php';
 include '../DataBase/Connection.php';
-include '../videogames/games.php';
+include 'games.php';
 
 $db = new Database();
 $encontrado = $db->verificarDriver();
@@ -9,18 +9,27 @@ $encontrado = $db->verificarDriver();
 if ($encontrado) {
     $cnn = $db->getConnection();
     $GameModelo = new Game($cnn);
-    $game = $GameModelo->getById(1);
-    if ($game == null) {
-        print("No hay un juego con ese ID:");
+    
+    if (isset($_GET['id'])) {
+        $id = $_GET['id'];
+        $game = $GameModelo->getById($id);
+        
+        if ($game) {
+            header('Content-Type: application/json');
+            $data = array(); 
+            $data['game'] = $game; // Asegúrate de que $game esté bien asignado
+            
+            echo json_encode($data);
+        } else {
+            header('Content-Type: application/json');
+            echo json_encode(['error' => 'No se encontró el juego con ese ID.']);
+        }
     } else {
-        print("================<br>");
-        print("Juego <br>");
-        print("================<br>");
-        print("ID: " . $game['id'] . "<br>");
-        print("Nombre: " . $game['titulo'] . "<br>");
-        print("Apellido: " . $game['desarrollador'] . "<br>");
-        print("Email: " . $game['fecha_lanzamiento'] . "<br>");
+        header('Content-Type: application/json');
+        echo json_encode(['error' => 'ID no especificado.']);
     }
+} else {
+    header('Content-Type: application/json');
+    echo json_encode(['error' => 'Fallo la conexión a la base de datos.']);
 }
-
 ?>

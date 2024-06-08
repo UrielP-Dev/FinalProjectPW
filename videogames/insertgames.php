@@ -10,13 +10,13 @@ if ($encontrado){
     $cnn = $db->getConnection();
     $GameModelo = new Game($cnn);
     $insertar=[];
-    $insertar['titulo'] = 'Among Us';
-    $insertar['desarrollador'] ='InnerSloth';
-    $insertar['fecha_lanzamiento']= '2018-06-15';
-    $insertar['genero'] = 'Party, Multijugador';
-    $insertar['plataformas'] ='PC, iOS, Android, Nintendo Switch';
-    $insertar['puntuacion']= 8.5;
-    $insertar['descripcion']= 'Un juego multijugador en el que los jugadores asumen el papel de tripulantes en una nave espacial, completando tareas mientras intentan descubrir a los impostores entre ellos que intentan sabotear y matar a la tripulación.';
+    $insertar['titulo'] = 'The Witcher 3: Wild Hunt';
+    $insertar['desarrollador'] ='CD Projekt Red';
+    $insertar['fecha_lanzamiento']= '2015-05-19';
+    $insertar['genero'] = 'RPG';
+    $insertar['plataformas'] ='PC, PS4, Xbox One';
+    $insertar['puntuacion']= 9.5;
+    $insertar['descripcion']= 'Un juego de rol ambientado en un vasto mundo de fantasía, donde los jugadores controlan al cazador de monstruos Geralt de Rivia, explorando diversas regiones, tomando decisiones morales y luchando contra enemigos poderoso';
 
     if ($GameModelo->insert($insertar)) {
         echo "<br> game insertado";
