@@ -3,23 +3,30 @@ include '../Context/orm.php';
 include '../DataBase/Connection.php';
 include '../videogames/games.php';
 
-$db=new Database();
+$db = new Database();
 $encontrado = $db->verificarDriver();
 
-if ($encontrado){
+if ($encontrado) {
     $cnn = $db->getConnection();
     $GameModelo = new Game($cnn);
-    $insertar=[];
-    $insertar['titulo'] = 'The Witcher 3: Wild Hunt';
-    $insertar['desarrollador'] ='CD Projekt Red';
-    $insertar['fecha_lanzamiento']= '2015-05-19';
-    $insertar['genero'] = 'RPG';
-    $insertar['plataformas'] ='PC, PS4, Xbox One';
-    $insertar['puntuacion']= 9.5;
-    $insertar['descripcion']= 'Un juego de rol ambientado en un vasto mundo de fantasía, donde los jugadores controlan al cazador de monstruos Geralt de Rivia, explorando diversas regiones, tomando decisiones morales y luchando contra enemigos poderoso';
+    
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $insertar = [];
+        $insertar['titulo'] = $_POST['titulo'];
+        $insertar['desarrollador'] = $_POST['desarrollador'];
+        $insertar['fecha_lanzamiento'] = $_POST['fecha_lanzamiento'];
+        $insertar['genero'] = $_POST['genero'];
+        $insertar['plataformas'] = $_POST['plataformas'];
+        $insertar['puntuacion'] = $_POST['puntuacion'];
+        $insertar['descripcion'] = $_POST['descripcion'];
 
-    if ($GameModelo->insert($insertar)) {
-        echo "<br> game insertado";
+        if ($GameModelo->insert($insertar)) {
+            echo "Juego insertado exitosamente";
+        } else {
+            echo "Error al insertar el juego";
+        }
     }
+} else {
+    echo "Fallo la conexión a la base de datos.";
 }
 ?>

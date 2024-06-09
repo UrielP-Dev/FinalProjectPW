@@ -39,7 +39,9 @@ session_start();
                     <th>Título</th>
                     <th>Desarrollador</th>
                     <th>Fecha de Lanzamiento</th>
-                    <th>Acciones</th>
+                    <th>Detalles</th>
+                    <th>Editar</th>
+                    <th>Eliminar</th>
                 </tr>
             </thead>
             <tbody id="table-group-divider">
@@ -48,7 +50,7 @@ session_start();
         </table>
     </div>
 
-    <div class="modal fade" id="infoUsumodal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal fade" id="infoGamemodal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -86,7 +88,8 @@ session_start();
                                   '<td>' + game.titulo + '</td>' +
                                   '<td>' + game.desarrollador + '</td>' +
                                   '<td>' + game.fecha_lanzamiento + '</td>' +
-                                  '<td>' + '<button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#infoUsumodal" data-id="' + game.id + '">Detalles</button>' + '</td>' +
+                                  '<td>' + '<button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#infoGamemodal" data-id="' + game.id + '">Detalles</button>' + '</td>' +
+                                  '<td>' + '<button type="button" class="btn btn-lg btn-warning" data-bs-toggle="modal" data-bs-target="#editmodal" data-id="' + game.id + '">Editar</button>' + '</td>' +
                                   '</tr>';
                         tableBody.append(row);
                     });
@@ -138,8 +141,8 @@ $('#table-group-divider').on('click', 'button[data-bs-toggle="modal"]', function
     </script>
     </script>
 </div>
-<!-- Modal -->
-<div class="modal fade" id="insertGameModal" tabindex="-1" aria-labelledby="insertGameModalLabel" aria-hidden="true">
+ <!-- Modal -->
+        <div class="modal fade" id="insertGameModal" tabindex="-1" aria-labelledby="insertGameModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -182,6 +185,30 @@ $('#table-group-divider').on('click', 'button[data-bs-toggle="modal"]', function
                 </div>
             </div>
         </div>
+    
+    <script>
+        $(document).ready(function() {
+            $('#insertGameForm').on('submit', function(event) {
+                event.preventDefault();
+                var formData = $(this).serialize();
+                $.ajax({
+                    url: '../videogames/insertgames.php',
+                    type: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        alert('Juego insertado exitosamente');
+                        $('#insertGameModal').modal('hide');
+                        setTimeout(function() {
+                            location.reload();
+                        }, 500);
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Error al insertar el juego');
+                    }
+                });
+            });
+        });
+    </script>   
                 <!-- Modal Info usuario-->
             <div class="modal fade" id="infoAdmmodal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
