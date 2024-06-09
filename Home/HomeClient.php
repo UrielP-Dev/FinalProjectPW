@@ -45,7 +45,7 @@ session_start();
         </table>
     </div>
 
-    <div class="modal fade" id="infoUsumodal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal fade" id="infoGamemodal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -83,7 +83,7 @@ session_start();
                                   '<td>' + game.titulo + '</td>' +
                                   '<td>' + game.desarrollador + '</td>' +
                                   '<td>' + game.fecha_lanzamiento + '</td>' +
-                                  '<td>' + '<button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#infoUsumodal" data-id="' + game.id + '">Detalles</button>' + '</td>' +
+                                  '<td>' + '<button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#infoGamemodal" data-id="' + game.id + '">Detalles</button>' + '</td>' +
                                   '</tr>';
                         tableBody.append(row);
                     });

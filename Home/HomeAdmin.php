@@ -90,6 +90,7 @@ session_start();
                                   '<td>' + game.fecha_lanzamiento + '</td>' +
                                   '<td>' + '<button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#infoGamemodal" data-id="' + game.id + '">Detalles</button>' + '</td>' +
                                   '<td>' + '<button type="button" class="btn btn-lg btn-warning" data-bs-toggle="modal" data-bs-target="#editmodal" data-id="' + game.id + '">Editar</button>' + '</td>' +
+                                  '<td>' + '<button type="button" class="btn btn-lg btn-danger" data-bs-toggle="modal" data-bs-target="#dropmodal" data-id="' + game.id + '">Eliminar</button>' + '</td>' +
                                   '</tr>';
                         tableBody.append(row);
                     });
