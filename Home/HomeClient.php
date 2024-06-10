@@ -1,5 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Home-client</title>
 </head>
 <body>
@@ -25,41 +28,112 @@
     </div>
   </div>
 </header>
+<div class="container mt-5">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Desarrollador</th>
+                    <th>Fecha de Lanzamiento</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="table-group-divider">
+                <!-- Filas se insertarán aquí -->
+            </tbody>
+        </table>
+    </div>
 
-<div class="table">
-<table class="table">
-  <thead>
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">Nombre</th>
-      <th scope="col">Plataforma</th>
-      <th scope="col">Precios M/N</th>
-      <th scope="col">Detalles</th>
-    </tr>
-  </thead>
-  <tbody class="table-group-divider">
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-      <td>
-      <button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#infoUsumodal">Detalles</button>                 
-                    </td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td colspan="2">Larry the Bird</td>
-      <td>@twitter</td>
-    </tr>
-  </tbody>
-</table>
+    <div class="modal fade" id="infoGamemodal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="ModalLabel">Información del Juego</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modal-body-content">
+                    <!-- Información del juego se mostrará aquí -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                url: '../videogames/getAllGames.php', // Asegúrate de que la ruta es correcta
+                method: 'GET',
+                success: function(response) {
+                    console.log(response); // Depura la respuesta
+                    var data;
+                    try {
+                        data = JSON.parse(response);
+                    } catch (e) {
+                        console.error("Error parsing JSON:", e);
+                        return;
+                    }
+                    var games = data.games; // Accede a la lista de juegos
+                    var tableBody = $('#table-group-divider');
+                    tableBody.empty(); // Limpia el cuerpo de la tabla
+
+                    games.forEach(function(game) {
+                        var row = '<tr>' +
+                                  '<td>' + game.id + '</td>' +
+                                  '<td>' + game.titulo + '</td>' +
+                                  '<td>' + game.desarrollador + '</td>' +
+                                  '<td>' + game.fecha_lanzamiento + '</td>' +
+                                  '<td>' + '<button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#infoGamemodal" data-id="' + game.id + '">Detalles</button>' + '</td>' +
+                                  '</tr>';
+                        tableBody.append(row);
+                    });
+// Agregar evento click a los botones de detalles
+$('#table-group-divider').on('click', 'button[data-bs-toggle="modal"]', function() {
+                        var gameId = $(this).data('id');
+                        $.ajax({
+                            url: '../videogames/getIdgame.php',
+                            type: 'GET',
+                            data: { id: gameId },
+                            dataType: 'json',
+                            success: function(data) {
+                                console.log(data); // Depura la respuesta
+                                var gameData;
+                                
+                                if (data.error) {
+                                    console.log(data.error);
+                                } else {
+                                    // Manejar los datos de juego recibidos
+                                    console.log(data.game);
+                                gameData=data.game;
+                                if (gameData.error) {
+                                    $('#modal-body-content').html('<p>' + gameData.error + '</p>');
+                                } else {
+                                    var gameDetails = '<p><strong>ID:</strong> ' + gameData.id + '</p>' +
+                                                      '<p><strong>Título:</strong> ' + gameData.titulo + '</p>' +
+                                                      '<p><strong>Desarrollador:</strong> ' + gameData.desarrollador + '</p>' +
+                                                      '<p><strong>Fecha de Lanzamiento:</strong> ' + gameData.fecha_lanzamiento + '</p>' +
+                                                      '<p><strong>Género:</strong> ' + gameData.genero + '</p>' +
+                                                      '<p><strong>Plataformas:</strong> ' + gameData.plataformas + '</p>' +
+                                                      '<p><strong>Puntuación:</strong> ' + gameData.puntuacion + '</p>' +
+                                                      '<p><strong>Descripción:</strong> ' + gameData.descripcion + '</p>';
+                                    $('#modal-body-content').html(gameDetails);
+                                }}
+                            },
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                console.error("Error: " + textStatus + " - " + errorThrown);
+                                $('#modal-body-content').html('<p>Error al cargar los detalles del juego.</p>');
+                            }
+                        });
+                    });
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error("Error: " + textStatus + " - " + errorThrown);
+                    console.error("Response text:", jqXHR.responseText);
+                }
+            });
+        });
+    </script>
+    </script>
 </div>
 
                 <!-- Modal Info usuario-->
@@ -71,7 +145,7 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                      aqui va la info del user
+                    
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>

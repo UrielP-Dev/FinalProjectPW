@@ -1,26 +1,25 @@
 <?php
-require_once('\DataBase\Connection.php');
-require_once('\Context\orm.php');
-require_once('\Access\users.php');
+include '../Context/orm.php';
+include '../DataBase/Connection.php';
+include '../Access/users.php';
 
-$db=new Database();
+$db = new Database();
 $encontrado = $db->verificarDriver();
 
 if ($encontrado) {
     $cnn = $db->getConnection();
-    $UserModelo = new users($cnn);
-    $users = $UserModelo->getById(3);
-    if($users == null)
-    print("No hay un usuario con ese ID:");
-    else{
-    foreach($materias as $mat){
+    $UserModelo = new user($cnn);
+    $user = $UserModelo->getById(1);
+    if ($user == null) {
+        print("No hay un usuario con ese ID:");
+    } else {
         print("================<br>");
-        print("Materia <br>");
+        print("Usuario <br>");
         print("================<br>");
-        print("ID: ".$materias['ID']."<br>");
-        print("Nombre: ".$materias['nombre_mat']."<br>");
-        print("Creditos: ".$materias['creditos']."<br>");
-        print("Horas: ".$materias['horas_sem']."<br>");
-    }
+        print("ID: " . $user['id'] . "<br>");
+        print("Nombre: " . $user['nombre'] . "<br>");
+        print("Apellido: " . $user['apellido'] . "<br>");
+        print("Email: " . $user['email'] . "<br>");
     }
 }
+?>
