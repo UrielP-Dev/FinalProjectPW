@@ -26,9 +26,10 @@ class Database
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
         ];
 
-        $dsn = "mysql:host=localhost;dbname=vgstore";
+        $dsn = "mysql:host=roundhouse.proxy.rlwy.net;port=11643;dbname=railway";
         $user = "root";
-        $password = "";
+        $password = "gbKMxgNyjUPfXFIKSxgXxeyoKxePXYxJ";
+
         $this->connection = new PDO($dsn, $user, $password, $options);
         $this->connection->exec("SET CHARACTER SET UTF8");
         return $this->connection;
