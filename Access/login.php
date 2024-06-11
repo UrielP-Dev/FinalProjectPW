@@ -66,8 +66,12 @@ session_start();
             <div class="formulario">
                 <h1 class="text-center mb-4">Inicio de Sesión</h1>
                 <form id="login-form" name="login-form">
-                    <div class="mb-3" id="error-container">
+                    <div class="mb-3" id="error-container" style="display: none">
                         <div class="alert alert-danger" role="alert" id="error-alert">
+                        </div>
+                    </div>
+                    <div class="mb-3" id="success-container" style="display: none">
+                        <div class="alert alert-success" role="alert" id="success-alert">
                         </div>
                     </div>
                     <div class="mb-3">

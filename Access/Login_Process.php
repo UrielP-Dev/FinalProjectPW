@@ -13,10 +13,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $response = array('status' => 0, 'message' => '');
 
     if (!$found) {
-        return;
+        $response['status'] = 1;
+        $response['message'] = 'Error al conectar a la base de datos. Driver no encontrado';
+        echo json_encode($response);
+        exit; // Database error;
     }
 
     $conn = $db->getConnection();
+    if (!$conn) {
+        $response['status'] = 1;
+        $response['message'] = 'Error al conectar a la base de datos.';
+        echo json_encode($response);
+        exit; // Database error;
+    }
+
     $user_model = new User($conn);
     $admin_model = new Admin($conn);
 
@@ -49,13 +59,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit; // Password has to be greater than 8 characters
     }
 
-    // Password encryption
-    $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-
     // If the checkbox is checked, the login would be as an admin
-    $loginAsAdmin = filter_has_var(INPUT_POST, 'admin-login');
+    $loginAsAdmin = filter_var($_POST['admin-login'], FILTER_VALIDATE_BOOLEAN);;
 
-    $data = 'email = "' . $email . '" AND password = "' . $password . '"';
+    $data = 'email = "' . $email . '"';
 
     if ($loginAsAdmin) {
         $user = $admin_model->getByData($data);
@@ -63,12 +70,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $user = $user_model->getByData($data);
     }
 
-    if (!$user) {
+    if ($user == null) {
         $response['status'] = 1;
         $response['message'] = 'El usuario especificado no se encuentra registrado';
         echo json_encode($response);
         exit; // The user does not exist in the database
     }
+
+    // Password check encryption
+    $correctPassword = password_verify($password, $user['password']);
+
+    // If password hash does not match, then password is incorrect
+    if (!$correctPassword) {
+        $response['status'] = 1;
+        $response['message'] = 'La contraseña es incorrecta';
+        echo json_encode($response);
+        exit; // Password is not correct
+    }
+
+    // The session has to be created before return to main page
+    $_SESSION['usr'] = array(
+        'nombre' => $user['nombre'],
+        'apellido' => $user['apellido'],
+        'email' => $user['email']
+    );
 
     // If the user exists, it has to be redirected to the home page for every
     // kind of user

@@ -4,7 +4,24 @@ $(document).ready(function() {
         event.preventDefault(); // Prevent the form from submitting
 
         // Definition of the alert to show error messages
-        const errorAlert = $('#error-alert')
+        const errorAlert = $('#error-alert');
+        const errorContainer = $('#error-container');
+
+        // Definition of the alert to show error messages
+        const successAlert = $('#success-alert');
+        const succesContainer = $('#success-container');
+
+        const showErrorMessage = (msg) => {
+            succesContainer.hide();
+            errorContainer.show();
+            errorAlert.text(msg);
+        }
+        
+        const showSuccessMessage = (msg) => {
+            errorContainer.hide();
+            succesContainer.show();
+            successAlert.text(msg);
+        }
 
         // Check if email is empty or password has the correct length
         const email = $('#user-email').val().trim();
@@ -12,21 +29,21 @@ $(document).ready(function() {
         const loginAsAdmin = $('#admin-login').is(':checked');
 
         if (email === '') {
-            errorAlert.text('El correo electronico no puede estar vacio');
+            showErrorMessage('El correo electronico no puede estar vacio');
             return;
         }
 
         if (!validateEmail(email)) {
-            errorAlert.text('El correo electronico proporcionado no es valido');
+            showErrorMessage('El correo electronico proporcionado no es valido');
             return;
         }
 
         if (password.length < 8) {
-            errorAlert.text('La contraseña debe de contener al menos 8 caracteres');
+            showErrorMessage('La contraseña debe de contener al menos 8 caracteres');
             return;
         } 
 
-        // Implementation of ajax
+        // Implementation of POST request with ajax
         $.ajax({
             type: 'POST',
             url: '../Access/Login_Process.php',
@@ -37,12 +54,25 @@ $(document).ready(function() {
             },
             success: function(response) {
                 if (response.status === 1) {
-                    errorAlert.text(response.message);
+                    showErrorMessage(response.message);
                     return;
                 }
 
+                showSuccessMessage('Usted sera redirigido a la pagina principal en unos momentos.');
+                
+                if (loginAsAdmin) {
+                    setTimeout(function() {
+                        window.location.href = '../Home/HomeAdmin.php';
+                    }, 3000);
+                } else {
+                    setTimeout(function() {
+                        window.location.href = '../Home/HomeClient.php';
+                    }, 3000);
+                    
+                }
             },
             error: function(xhr, status, message) {
+                showErrorMessage('Ocurrio un error con la conexion al servidor. ' + message);
             }
         });
 
