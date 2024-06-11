@@ -22,13 +22,16 @@ session_start();
         <button type="button" class="btn btn-outline-light me-2" onclick="window.location.href = 'logout.php';">
             log out
         </button>
-        <button type="button" class="btn btn-outline-success me-2" data-bs-toggle="modal" data-bs-target="#infoUsumodal">Información Usuario</button>
+        <button type="button" class="btn btn-outline-success me-2" data-bs-toggle="modal" data-bs-target="#infoAdmmodal">Información Administrador</button>
       </div>
 
     </div>
   </div>
 </header>
 <div class="container mt-5">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insertGameModal">
+            Insertar Juego
+        </button>
         <table class="table">
             <thead>
                 <tr>
@@ -36,7 +39,9 @@ session_start();
                     <th>Título</th>
                     <th>Desarrollador</th>
                     <th>Fecha de Lanzamiento</th>
-                    <th>Acciones</th>
+                    <th>Detalles</th>
+                    <th>Editar</th>
+                    <th>Eliminar</th>
                 </tr>
             </thead>
             <tbody id="table-group-divider">
@@ -84,6 +89,8 @@ session_start();
                                   '<td>' + game.desarrollador + '</td>' +
                                   '<td>' + game.fecha_lanzamiento + '</td>' +
                                   '<td>' + '<button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#infoGamemodal" data-id="' + game.id + '">Detalles</button>' + '</td>' +
+                                  '<td>' + '<button type="button" class="btn btn-lg btn-warning" data-bs-toggle="modal" data-bs-target="#editmodal" data-id="' + game.id + '">Editar</button>' + '</td>' +
+                                  '<td>' + '<button type="button" class="btn btn-lg btn-danger" data-bs-toggle="modal" data-bs-target="#dropmodal" data-id="' + game.id + '">Eliminar</button>' + '</td>' +
                                   '</tr>';
                         tableBody.append(row);
                     });
@@ -135,13 +142,80 @@ $('#table-group-divider').on('click', 'button[data-bs-toggle="modal"]', function
     </script>
     </script>
 </div>
-
+ <!-- Modal -->
+        <div class="modal fade" id="insertGameModal" tabindex="-1" aria-labelledby="insertGameModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="insertGameModalLabel">Insertar Nuevo Juego</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="insertGameForm">
+                            <div class="form-group">
+                                <label for="titulo">Título</label>
+                                <input type="text" class="form-control" id="titulo" name="titulo" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="desarrollador">Desarrollador</label>
+                                <input type="text" class="form-control" id="desarrollador" name="desarrollador" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="fecha_lanzamiento">Fecha de Lanzamiento</label>
+                                <input type="date" class="form-control" id="fecha_lanzamiento" name="fecha_lanzamiento" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="genero">Género</label>
+                                <input type="text" class="form-control" id="genero" name="genero" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="plataformas">Plataformas</label>
+                                <input type="text" class="form-control" id="plataformas" name="plataformas" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="puntuacion">Puntuación</label>
+                                <input type="number" step="0.1" class="form-control" id="puntuacion" name="puntuacion" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="descripcion">Descripción</label>
+                                <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Insertar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    <script>
+        $(document).ready(function() {
+            $('#insertGameForm').on('submit', function(event) {
+                event.preventDefault();
+                var formData = $(this).serialize();
+                $.ajax({
+                    url: '../videogames/insertgames.php',
+                    type: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        alert('Juego insertado exitosamente');
+                        $('#insertGameModal').modal('hide');
+                        setTimeout(function() {
+                            location.reload();
+                        }, 500);
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Error al insertar el juego');
+                    }
+                });
+            });
+        });
+    </script>   
                 <!-- Modal Info usuario-->
-            <div class="modal fade" id="infoUsumodal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+            <div class="modal fade" id="infoAdmmodal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="ModalLabel">Información Usuario</h1>
+                      <h1 class="modal-title fs-3" id="ModalLabel">Información Administrador</h1>
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
