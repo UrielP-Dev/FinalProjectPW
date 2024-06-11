@@ -1,15 +1,15 @@
 <?php
 
-include('../Database/Connection.php');
-include('../Context/orm.php');
-include('users.php');
-include('admin.php');
+include '../DataBase/Connection.php';
+include '../Context/orm.php';
+include 'users.php';
+include 'admin.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     header('Content-Type: application/json');
 
-    $db = new Database();
-    $found = $db->verificarDriver();
+    $database = new Database();
+    $found = $database->verificarDriver();
     $response = array('status' => 0, 'message' => '');
 
     if (!$found) {
@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit; // Database error;
     }
 
-    $conn = $db->getConnection();
+    $conn = $database->getConnection();
     if (!$conn) {
         $response['status'] = 1;
         $response['message'] = 'Error al conectar a la base de datos.';
@@ -99,12 +99,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // kind of user
     if ($loginAsAdmin) {
         $response['status'] = 0;
-        $response['message'] = 'El usuario especificado es administrador';
+        $response['message'] = '';
         echo json_encode($response);
         exit; // The user exist in the database
     } else {
         $response['status'] = 0;
-        $response['message'] = 'El usuario especificado es un usuario comun';
+        $response['message'] = '';
         echo json_encode($response);
         exit; // The user exist in the database
     }

@@ -41,12 +41,12 @@ $(document).ready(function() {
         if (password.length < 8) {
             showErrorMessage('La contraseña debe de contener al menos 8 caracteres');
             return;
-        } 
+        }
 
         // Implementation of POST request with ajax
         $.ajax({
             type: 'POST',
-            url: '../Access/Login_Process.php',
+            url: '../Access/LoginProcess.php',
             data: {
                 'user-email': email,
                 'password': password,
@@ -72,7 +72,7 @@ $(document).ready(function() {
                 }
             },
             error: function(xhr, status, message) {
-                showErrorMessage('Ocurrio un error con la conexion al servidor. ' + message);
+                showErrorMessage('Ocurrio un error con la conexion al servidor. ' + xhr.status + " " + message);
             }
         });
 
