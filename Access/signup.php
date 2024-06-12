@@ -64,8 +64,11 @@
         <label for="password" class="form-label">Contraseña</label>
         <input type="password" class="form-control" id="password" name="password" required>
       </div>
-      <div class="d-grid">
+      <div class="d-grid mb-3">
         <button type="submit" class="btn btn-primary">Registrarse</button>
+      </div>
+      <div class="text-center">
+        <a href="AdminSignUp.php" class="btn btn-link">Registro de Administrador</a>
       </div>
     </form>
   </div>
@@ -75,7 +78,31 @@
 <script>
 document.getElementById('userForm').addEventListener('submit', function(event) {
   event.preventDefault(); // Evita el envío del formulario
+
   var formData = new FormData(this);
+  var email = document.getElementById('email').value;
+  var password = document.getElementById('password').value;
+
+  // Validar formato de correo electrónico
+  if (!validateEmail(email)) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'El formato del correo electrónico no es válido.'
+    });
+    return;
+  }
+
+  // Validar longitud de la contraseña
+  if (password.length < 8) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'La contraseña debe tener al menos 8 caracteres.'
+    });
+    return;
+  }
+
   fetch(this.action, {
     method: 'POST',
     body: formData
@@ -87,7 +114,7 @@ document.getElementById('userForm').addEventListener('submit', function(event) {
           title: 'Registro exitoso',
           text: 'El Usuario ha sido registrado correctamente',
           showConfirmButton: false,
-          timer: 2000
+          timer: 1000
         }).then(() => {
           window.location.href = 'SignUpSuccess.php'; // Redirige después de mostrar la animación
         });
@@ -95,11 +122,16 @@ document.getElementById('userForm').addEventListener('submit', function(event) {
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: 'Hubo un problema al registrar el usuario'
+          text: result // Muestra el mensaje de error devuelto por PHP
         });
       }
     });
 });
+
+function validateEmail(email) {
+  var re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+  return re.test(email);
+}
 </script>
 
 </body>
