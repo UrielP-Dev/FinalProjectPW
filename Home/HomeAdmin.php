@@ -94,8 +94,35 @@ session_start();
                                   '</tr>';
                         tableBody.append(row);
                     });
-// Agregar evento click a los botones de detalles
-$('#table-group-divider').on('click', 'button[data-bs-toggle="modal"]', function() {
+// Agregar evento click al boton Eliminar 
+$(document).ready(function() {
+    $('#table-group-divider').on('click','button.btn-danger', function(event) {
+        event.preventDefault();
+        var gameId = $(this).data('id');
+                    if (confirm('¿Estás seguro de que deseas eliminar este juego?')) {
+                        $.ajax({
+                            url: '../videogames/deleteGames.php',
+                            type: 'GET',
+                            data: { id: gameId },
+                            success: function(response) {
+                                alert('Juego eliminado exitosamente');
+                                $('#table-group-divider').modal('hide');
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 500);                                                           
+                            },
+                            error: function(xhr, status, error) {
+                                alert('Error al eliminar el juego');
+                            }
+                        });
+                    }
+        
+    });
+});
+                              
+
+ // Agregar evento click a los botones de detalles
+ $('#table-group-divider').on('click', 'button[data-bs-toggle="modal"]', function() {
                         var gameId = $(this).data('id');
                         $.ajax({
                             url: '../videogames/getIdgame.php',
@@ -139,9 +166,12 @@ $('#table-group-divider').on('click', 'button[data-bs-toggle="modal"]', function
                 }
             });
         });
+    
     </script>
+
     </script>
 </div>
+
  <!-- Modal -->
         <div class="modal fade" id="insertGameModal" tabindex="-1" aria-labelledby="insertGameModalLabel" aria-hidden="true">
             <div class="modal-dialog">

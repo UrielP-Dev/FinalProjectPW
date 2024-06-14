@@ -47,6 +47,7 @@
                     <div class="modal-body">
                       Antonio Uriel Perez Pichardo <br>
                       Bruno Mejía Maya
+                    <br>Yoshua Daruma Vargas Moran
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
