@@ -227,6 +227,6 @@ $('#table-group-divider').on('click', 'button[data-bs-toggle="modal"]', function
                   </div>
                 </div>
             </div>
-    
-</body>
-</html>
+<?php
+include '../Home/footer.php';
+?>

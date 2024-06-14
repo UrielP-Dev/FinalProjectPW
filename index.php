@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="stylesjumbo.css">
     <title>Home</title>
 </head>
 <body>
@@ -32,8 +33,12 @@
     </div>
   </div>
 </header>
-    <div class="jumbotron" style="background-image: url('/resoures/fondo.jpg');background-size: cover;background-position: center;background-repeat: no-repeat;height: 80vh;">
-      
+    <div class="jumbotron" >
+      <div class="jumbotron-content">
+            <h1>Bienvenidos a GameZone</h1>
+            <p>Aqui encontraras información de una gran variedad de videojuegos</p>
+            <a href="/Access/signup.php" class="btn">Más Información</a>
+        </div>
     </div>
 
               <!-- Modal Integrantes-->
@@ -72,7 +77,5 @@
                 </div>
               </div>
 
-
-
-</body>
-</html>
+              <?php include('Home/footer.php'); ?>
+ 
