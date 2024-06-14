@@ -1,6 +1,6 @@
 
 
-    <link rel="stylesheet" href="Home/stylesfooter.css">
+    <link rel="stylesheet" href="/Home/stylesfooter.css">
     <footer>
         <div class="footer-container">
             <div class="row">

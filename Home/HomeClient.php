@@ -29,8 +29,8 @@ session_start();
   </div>
 </header>
 <div class="container mt-5">
-        <table class="table">
-            <thead>
+        <table class="table  table-bordered  table-hover">
+            <thead class="table-primary">
                 <tr>
                     <th>ID</th>
                     <th>Título</th>
@@ -39,7 +39,7 @@ session_start();
                     <th>Acciones</th>
                 </tr>
             </thead>
-            <tbody id="table-group-divider">
+            <tbody  id="table-group-divider">
                 <!-- Filas se insertarán aquí -->
             </tbody>
         </table>

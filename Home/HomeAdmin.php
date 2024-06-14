@@ -32,8 +32,8 @@ session_start();
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insertGameModal">
             Insertar Juego
         </button>
-        <table class="table">
-            <thead>
+        <table class="table  table-bordered  table-hover">
+            <thead class="table-primary">
                 <tr>
                     <th>ID</th>
                     <th>Título</th>
