@@ -45,8 +45,10 @@
                       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                      Antonio Uriel Perez Pichardo <br>
-                      Bruno Mejía Maya
+                    Jonatan Gustavo Eslava Atenogenes<br>
+                        Bruno Mejía Maya                    
+                    <br>Jose Francisco Martinez Tapia
+                    <br>Antonio Uriel Perez Pichardo
                     <br>Yoshua Daruma Vargas Moran
                     </div>
                     <div class="modal-footer">
