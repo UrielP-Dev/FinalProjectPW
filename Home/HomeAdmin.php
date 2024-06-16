@@ -32,8 +32,8 @@ session_start();
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#insertGameModal">
             Insertar Juego
         </button>
-        <table class="table  table-bordered  table-hover">
-            <thead class="table-primary">
+        <table class="table">
+            <thead>
                 <tr>
                     <th>ID</th>
                     <th>Título</th>
@@ -65,110 +65,139 @@ session_start();
     </div>
 
     <script>
-        $(document).ready(function() {
+    $(document).ready(function() {
+        $.ajax({
+            url: '../videogames/getAllGames.php',
+            method: 'GET',
+            success: function(response) {
+                var data;
+                try {
+                    data = JSON.parse(response);
+                } catch (e) {
+                    console.error("Error parsing JSON:", e);
+                    return;
+                }
+                var games = data.games;
+                var tableBody = $('#table-group-divider');
+                tableBody.empty();
+
+                games.forEach(function(game) {
+                    var row = '<tr>' +
+                              '<td>' + game.id + '</td>' +
+                              '<td>' + game.titulo + '</td>' +
+                              '<td>' + game.desarrollador + '</td>' +
+                              '<td>' + game.fecha_lanzamiento + '</td>' +
+                              '<td>' + '<button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#infoGamemodal" data-id="' + game.id + '">Detalles</button>' + '</td>' +
+                              '<td>' + '<button type="button" class="btn btn-lg btn-warning" data-bs-toggle="modal" data-bs-target="#editmodal" data-id="' + game.id + '">Editar</button>' + '</td>' +
+                              '<td>' + '<button type="button" class="btn btn-lg btn-danger" data-bs-toggle="modal" data-bs-target="#dropmodal" data-id="' + game.id + '">Eliminar</button>' + '</td>' +
+                              '</tr>';
+                    tableBody.append(row);
+                });
+
+                // Agregar evento click al botón Editar
+                $('#table-group-divider').on('click', 'button.btn-warning', function() {
+                    var gameId = $(this).data('id');
+                    $.ajax({
+                        url: '../videogames/getIdgame.php',
+                        type: 'GET',
+                        data: { id: gameId },
+                        dataType: 'json',
+                        success: function(data) {
+                            var gameData = data.game;
+                            if (gameData) {
+                                $('#edit-id').val(gameData.id);
+                                $('#edit-titulo').val(gameData.titulo);
+                                $('#edit-desarrollador').val(gameData.desarrollador);
+                                $('#edit-fecha_lanzamiento').val(gameData.fecha_lanzamiento);
+                                $('#edit-genero').val(gameData.genero);
+                                $('#edit-plataformas').val(gameData.plataformas);
+                                $('#edit-puntuacion').val(gameData.puntuacion);
+                                $('#edit-descripcion').val(gameData.descripcion);
+                            }
+                        },
+                        error: function(jqXHR, textStatus, errorThrown) {
+                            console.error("Error: " + textStatus + " - " + errorThrown);
+                        }
+                    });
+                });
+
+                // Manejar el envío del formulario de edición
+                $('#editGameForm').on('submit', function(event) {
+                    event.preventDefault();
+                    var formData = $(this).serialize();
+                    $.ajax({
+                        url: '../videogames/updateGame.php',
+                        type: 'POST',
+                        data: formData,
+                        success: function(response) {
+                            alert('Juego actualizado exitosamente');
+                            $('#editmodal').modal('hide');
+                            setTimeout(function() {
+                                location.reload();
+                            }, 500);
+                        },
+                        error: function(xhr, status, error) {
+                            alert('Error al actualizar el juego');
+                        }
+                    });
+                });
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error("Error: " + textStatus + " - " + errorThrown);
+            }
+        });
+
+        // Manejar el botón Eliminar
+        $('#table-group-divider').on('click', 'button.btn-danger', function(event) {
+            event.preventDefault();
+            var gameId = $(this).data('id');
+            if (confirm('¿Estás seguro de que deseas eliminar este juego?')) {
+                $.ajax({
+                    url: '../videogames/deleteGames.php',
+                    type: 'GET',
+                    data: { id: gameId },
+                    success: function(response) {
+                        alert('Juego eliminado exitosamente');
+                        setTimeout(function() {
+                            location.reload();
+                        }, 500);
+                    },
+                    error: function(xhr, status, error) {
+                        alert('Error al eliminar el juego');
+                    }
+                });
+            }
+        });
+
+        // Agregar evento click a los botones de detalles
+        $('#table-group-divider').on('click', 'button[data-bs-toggle="modal"]', function() {
+            var gameId = $(this).data('id');
             $.ajax({
-                url: '../videogames/getAllGames.php', // Asegúrate de que la ruta es correcta
-                method: 'GET',
-                success: function(response) {
-                    console.log(response); // Depura la respuesta
-                    var data;
-                    try {
-                        data = JSON.parse(response);
-                    } catch (e) {
-                        console.error("Error parsing JSON:", e);
-                        return;
+                url: '../videogames/getIdgame.php',
+                type: 'GET',
+                data: { id: gameId },
+                dataType: 'json',
+                success: function(data) {
+                    var gameData = data.game;
+                    if (gameData) {
+                        var gameDetails = '<p><strong>ID:</strong> ' + gameData.id + '</p>' +
+                                          '<p><strong>Título:</strong> ' + gameData.titulo + '</p>' +
+                                          '<p><strong>Desarrollador:</strong> ' + gameData.desarrollador + '</p>' +
+                                          '<p><strong>Fecha de Lanzamiento:</strong> ' + gameData.fecha_lanzamiento + '</p>' +
+                                          '<p><strong>Género:</strong> ' + gameData.genero + '</p>' +
+                                          '<p><strong>Plataformas:</strong> ' + gameData.plataformas + '</p>' +
+                                          '<p><strong>Puntuación:</strong> ' + gameData.puntuacion + '</p>' +
+                                          '<p><strong>Descripción:</strong> ' + gameData.descripcion + '</p>';
+                        $('#modal-body-content').html(gameDetails);
                     }
-                    var games = data.games; // Accede a la lista de juegos
-                    var tableBody = $('#table-group-divider');
-                    tableBody.empty(); // Limpia el cuerpo de la tabla
-
-                    games.forEach(function(game) {
-                        var row = '<tr>' +
-                                  '<td>' + game.id + '</td>' +
-                                  '<td>' + game.titulo + '</td>' +
-                                  '<td>' + game.desarrollador + '</td>' +
-                                  '<td>' + game.fecha_lanzamiento + '</td>' +
-                                  '<td>' + '<button type="button" class="btn btn-lg btn-primary" data-bs-toggle="modal" data-bs-target="#infoGamemodal" data-id="' + game.id + '">Detalles</button>' + '</td>' +
-                                  '<td>' + '<button type="button" class="btn btn-lg btn-warning" data-bs-toggle="modal" data-bs-target="#editmodal" data-id="' + game.id + '">Editar</button>' + '</td>' +
-                                  '<td>' + '<button type="button" class="btn btn-lg btn-danger" data-bs-toggle="modal" data-bs-target="#dropmodal" data-id="' + game.id + '">Eliminar</button>' + '</td>' +
-                                  '</tr>';
-                        tableBody.append(row);
-                    });
-// Agregar evento click al boton Eliminar 
-$(document).ready(function() {
-    $('#table-group-divider').on('click','button.btn-danger', function(event) {
-        event.preventDefault();
-        var gameId = $(this).data('id');
-                    if (confirm('¿Estás seguro de que deseas eliminar este juego?')) {
-                        $.ajax({
-                            url: '../videogames/deleteGames.php',
-                            type: 'GET',
-                            data: { id: gameId },
-                            success: function(response) {
-                                alert('Juego eliminado exitosamente');
-                                $('#table-group-divider').modal('hide');
-                                setTimeout(function() {
-                                    location.reload();
-                                }, 500);                                                           
-                            },
-                            error: function(xhr, status, error) {
-                                alert('Error al eliminar el juego');
-                            }
-                        });
-                    }
-        
-    });
-});
-                              
-
- // Agregar evento click a los botones de detalles
- $('#table-group-divider').on('click', 'button[data-bs-toggle="modal"]', function() {
-                        var gameId = $(this).data('id');
-                        $.ajax({
-                            url: '../videogames/getIdgame.php',
-                            type: 'GET',
-                            data: { id: gameId },
-                            dataType: 'json',
-                            success: function(data) {
-                                console.log(data); // Depura la respuesta
-                                var gameData;
-                                
-                                if (data.error) {
-                                    console.log(data.error);
-                                } else {
-                                    // Manejar los datos de juego recibidos
-                                    console.log(data.game);
-                                gameData=data.game;
-                                if (gameData.error) {
-                                    $('#modal-body-content').html('<p>' + gameData.error + '</p>');
-                                } else {
-                                    var gameDetails = '<p><strong>ID:</strong> ' + gameData.id + '</p>' +
-                                                      '<p><strong>Título:</strong> ' + gameData.titulo + '</p>' +
-                                                      '<p><strong>Desarrollador:</strong> ' + gameData.desarrollador + '</p>' +
-                                                      '<p><strong>Fecha de Lanzamiento:</strong> ' + gameData.fecha_lanzamiento + '</p>' +
-                                                      '<p><strong>Género:</strong> ' + gameData.genero + '</p>' +
-                                                      '<p><strong>Plataformas:</strong> ' + gameData.plataformas + '</p>' +
-                                                      '<p><strong>Puntuación:</strong> ' + gameData.puntuacion + '</p>' +
-                                                      '<p><strong>Descripción:</strong> ' + gameData.descripcion + '</p>';
-                                    $('#modal-body-content').html(gameDetails);
-                                }}
-                            },
-                            error: function(jqXHR, textStatus, errorThrown) {
-                                console.error("Error: " + textStatus + " - " + errorThrown);
-                                $('#modal-body-content').html('<p>Error al cargar los detalles del juego.</p>');
-                            }
-                        });
-                    });
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
-                    console.error("Error: " + textStatus + " - " + errorThrown);
-                    console.error("Response text:", jqXHR.responseText);
+                    $('#modal-body-content').html('<p>Error al cargar los detalles del juego.</p>');
                 }
             });
         });
-    
-    </script>
-
+    });
+</script>
     </script>
 </div>
 
@@ -257,6 +286,53 @@ $(document).ready(function() {
                   </div>
                 </div>
             </div>
-<?php
-include '../Home/footer.php';
-?>
+
+            <!-- Modal Editar -->
+<div class="modal fade" id="editmodal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Editar Juego</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editGameForm">
+                    <input type="hidden" id="edit-id" name="id">
+                    <div class="form-group">
+                        <label for="edit-titulo">Título</label>
+                        <input type="text" class="form-control" id="edit-titulo" name="titulo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-desarrollador">Desarrollador</label>
+                        <input type="text" class="form-control" id="edit-desarrollador" name="desarrollador" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-fecha_lanzamiento">Fecha de Lanzamiento</label>
+                        <input type="date" class="form-control" id="edit-fecha_lanzamiento" name="fecha_lanzamiento" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-genero">Género</label>
+                        <input type="text" class="form-control" id="edit-genero" name="genero" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-plataformas">Plataformas</label>
+                        <input type="text" class="form-control" id="edit-plataformas" name="plataformas" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-puntuacion">Puntuación</label>
+                        <input type="number" step="0.1" class="form-control" id="edit-puntuacion" name="puntuacion" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-descripcion">Descripción</label>
+                        <textarea class="form-control" id="edit-descripcion" name="descripcion" rows="3" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+</body>
+</html>
