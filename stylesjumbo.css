@@ -1,0 +1,54 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.jumbotron {
+    background: url('/resoures/fondo.jpg') no-repeat center center;
+    background-size: cover;
+    color: rgb(250, 250, 250);
+    text-align: center;
+    padding: 100px 20px;
+    position: relative;
+}
+
+.jumbotron::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 0;
+}
+
+.jumbotron-content {
+    position: relative;
+    z-index: 1;
+}
+
+.jumbotron h1 {
+    font-size: 4rem;
+    margin-bottom: 20px;
+}
+
+.jumbotron p {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.jumbotron .btn {
+    background-color: #33e0ff;
+    color: white;
+   box-shadow: 0 0 5px cyan,
+   0 0 25px cyan;
+}
+
+.jumbotron .btn:hover {
+    box-shadow: 0 0 5px cyan,
+    0 0 25px cyan,0 0 50px cyan,
+    0 0 100px cyan, 0 0 200px cyan;
+}

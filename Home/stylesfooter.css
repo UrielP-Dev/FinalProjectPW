@@ -1,0 +1,27 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+footer {
+    background-color: #09d5f0;
+    color: #000000;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.col img {
+    max-width: 100px;
+    margin-bottom: 10px;
+}
+
+.footer-content {
+    font-size: 20px;
+    text-align: center;
+}
