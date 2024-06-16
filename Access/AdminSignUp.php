@@ -52,7 +52,7 @@
     <h1 class="text-center mb-4">Formulario de Registro de Administrador</h1>
     <form id="adminForm" action="Process_Admin_registration.php" method="post">
       <div class="mb-3">
-        <label for="nombre" class="form-label">Nombre</ label>
+        <label for="nombre" class="form-label">Nombre</label>
         <input type="text" class="form-control" id="nombre" name="nombre" required>
       </div>
       <div class="mb-3">
@@ -83,39 +83,71 @@
 <script>
 document.getElementById('adminForm').addEventListener('submit', function(event) {
   event.preventDefault(); // Evita el envío del formulario
+
   var codigo = document.getElementById('codigo').value;
   var codigoCorrecto = 'admin123'; // Código de administrador correcto
+  var email = document.getElementById('email').value;
+  var password = document.getElementById('password').value;
 
+  // Validar formato de correo electrónico
+  if (!validateEmail(email)) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'El formato del correo electrónico no es válido.'
+    });
+    return;
+  }
+
+  // Validar longitud de la contraseña
+  if (password.length < 8) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'La contraseña debe tener al menos 8 caracteres.'
+    });
+    return;
+  }
+
+  // Validar código de administrador
   if (codigo !== codigoCorrecto) {
     document.getElementById('error-message').style.display = 'block';
+    return;
   } else {
-    // Envía el formulario con AJAX
-    var formData = new FormData(this);
-    fetch(this.action, {
-      method: 'POST',
-      body: formData
-    }).then(response => response.text())
-      .then(result => {
-        if (result.includes('Success')) { // Ajusta esto según el mensaje que devuelva tu PHP en caso de éxito
-          Swal.fire({
-            icon: 'success',
-            title: 'Registro exitoso',
-            text: 'El administrador ha sido registrado correctamente',
-            showConfirmButton: false,
-            timer: 2000
-          }).then(() => {
-            window.location.href = 'SignUpSuccess.php'; // Redirige después de mostrar la animación
-          });
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Hubo un problema al registrar el administrador'
-          });
-        }
-      });
+    document.getElementById('error-message').style.display = 'none';
   }
+
+  // Envía el formulario con AJAX
+  var formData = new FormData(this);
+  fetch(this.action, {
+    method: 'POST',
+    body: formData
+  }).then(response => response.text())
+    .then(result => {
+      if (result.includes('Success')) { // Ajusta esto según el mensaje que devuelva tu PHP en caso de éxito
+        Swal.fire({
+          icon: 'success',
+          title: 'Registro exitoso',
+          text: 'El administrador ha sido registrado correctamente',
+          showConfirmButton: false,
+          timer: 1000
+        }).then(() => {
+          window.location.href = 'SignUpSuccess.php'; // Redirige después de mostrar la animación
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: result // Muestra el mensaje de error devuelto por PHP
+        });
+      }
+    });
 });
+
+function validateEmail(email) {
+  var re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+  return re.test(email);
+}
 </script>
 
 </body>
