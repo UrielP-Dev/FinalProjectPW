@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 include '../DataBase/Connection.php';
 include '../Context/orm.php';
@@ -60,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // If the checkbox is checked, the login would be as an admin
-    $loginAsAdmin = filter_var($_POST['admin-login'], FILTER_VALIDATE_BOOLEAN);;
+    $loginAsAdmin = filter_var($_POST['admin-login'], FILTER_VALIDATE_BOOLEAN);
 
     $data = 'email = "' . $email . '"';
 
@@ -95,17 +96,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'email' => $user['email']
     );
 
-    // If the user exists, it has to be redirected to the home page for every
-    // kind of user
-    if ($loginAsAdmin) {
-        $response['status'] = 0;
-        $response['message'] = '';
-        echo json_encode($response);
-        exit; // The user exist in the database
+    // Verify that the session variable is set
+    if(isset($_SESSION['usr'])) {
+        error_log('Session user set: ' . json_encode($_SESSION['usr']));
     } else {
-        $response['status'] = 0;
-        $response['message'] = '';
-        echo json_encode($response);
-        exit; // The user exist in the database
+        error_log('Session user not set');
     }
+
+    $response['status'] = 0;
+    $response['message'] = '';
+    echo json_encode($response);
+    exit;
 }
+

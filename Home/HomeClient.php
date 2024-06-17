@@ -61,6 +61,23 @@ session_start();
 
     <script>
         $(document).ready(function() {
+            // Obtener la información del usuario y mostrarla
+            $.ajax({
+                url: '../Access/getUserInfo.php', // Ruta al archivo PHP que devolverá la información del usuario
+                method: 'GET',
+                success: function(response) {
+                    var userInfo = JSON.parse(response);
+                    $('#infoUsumodal .modal-body').html(
+                        '<p><strong>Nombre:</strong> ' + userInfo.nombre + '</p>' +
+                        '<p><strong>Apellido:</strong> ' + userInfo.apellido + '</p>' +
+                        '<p><strong>Email:</strong> ' + userInfo.email + '</p>'
+                    );
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error("Error: " + textStatus + " - " + errorThrown);
+                }
+            });
+
             $.ajax({
                 url: '../videogames/getAllGames.php', // Asegúrate de que la ruta es correcta
                 method: 'GET',
@@ -87,8 +104,9 @@ session_start();
                                   '</tr>';
                         tableBody.append(row);
                     });
-// Agregar evento click a los botones de detalles
-$('#table-group-divider').on('click', 'button[data-bs-toggle="modal"]', function() {
+
+                    // Agregar evento click a los botones de detalles
+                    $('#table-group-divider').on('click', 'button[data-bs-toggle="modal"]', function() {
                         var gameId = $(this).data('id');
                         $.ajax({
                             url: '../videogames/getIdgame.php',
@@ -104,20 +122,21 @@ $('#table-group-divider').on('click', 'button[data-bs-toggle="modal"]', function
                                 } else {
                                     // Manejar los datos de juego recibidos
                                     console.log(data.game);
-                                gameData=data.game;
-                                if (gameData.error) {
-                                    $('#modal-body-content').html('<p>' + gameData.error + '</p>');
-                                } else {
-                                    var gameDetails = '<p><strong>ID:</strong> ' + gameData.id + '</p>' +
-                                                      '<p><strong>Título:</strong> ' + gameData.titulo + '</p>' +
-                                                      '<p><strong>Desarrollador:</strong> ' + gameData.desarrollador + '</p>' +
-                                                      '<p><strong>Fecha de Lanzamiento:</strong> ' + gameData.fecha_lanzamiento + '</p>' +
-                                                      '<p><strong>Género:</strong> ' + gameData.genero + '</p>' +
-                                                      '<p><strong>Plataformas:</strong> ' + gameData.plataformas + '</p>' +
-                                                      '<p><strong>Puntuación:</strong> ' + gameData.puntuacion + '</p>' +
-                                                      '<p><strong>Descripción:</strong> ' + gameData.descripcion + '</p>';
-                                    $('#modal-body-content').html(gameDetails);
-                                }}
+                                    gameData = data.game;
+                                    if (gameData.error) {
+                                        $('#modal-body-content').html('<p>' + gameData.error + '</p>');
+                                    } else {
+                                        var gameDetails = '<p><strong>ID:</strong> ' + gameData.id + '</p>' +
+                                                          '<p><strong>Título:</strong> ' + gameData.titulo + '</p>' +
+                                                          '<p><strong>Desarrollador:</strong> ' + gameData.desarrollador + '</p>' +
+                                                          '<p><strong>Fecha de Lanzamiento:</strong> ' + gameData.fecha_lanzamiento + '</p>' +
+                                                          '<p><strong>Género:</strong> ' + gameData.genero + '</p>' +
+                                                          '<p><strong>Plataformas:</strong> ' + gameData.plataformas + '</p>' +
+                                                          '<p><strong>Puntuación:</strong> ' + gameData.puntuacion + '</p>' +
+                                                          '<p><strong>Descripción:</strong> ' + gameData.descripcion + '</p>';
+                                        $('#modal-body-content').html(gameDetails);
+                                    }
+                                }
                             },
                             error: function(jqXHR, textStatus, errorThrown) {
                                 console.error("Error: " + textStatus + " - " + errorThrown);
@@ -133,27 +152,26 @@ $('#table-group-divider').on('click', 'button[data-bs-toggle="modal"]', function
             });
         });
     </script>
-    </script>
 </div>
 
-                <!-- Modal Info usuario-->
-            <div class="modal fade" id="infoUsumodal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="ModalLabel">Información Usuario</h1>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                    
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
-                    </div>
-                  </div>
-                </div>
+<!-- Modal Info usuario-->
+<div class="modal fade" id="infoUsumodal" tabindex="-1" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="ModalLabel">Información Usuario</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-    
-            <?php
-            include '../Home/footer.php';
-            ?>
+            <div class="modal-body">
+                <!-- La información del usuario se cargará aquí -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php
+include '../Home/footer.php';
+?>
