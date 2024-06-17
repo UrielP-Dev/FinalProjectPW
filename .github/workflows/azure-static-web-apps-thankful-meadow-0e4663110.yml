@@ -23,8 +23,6 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '7.4' # Puedes ajustar la versión de PHP según tus necesidades
-      - name: Install dependencies
-        run: composer install
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
