@@ -82,10 +82,10 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 <script>
 document.getElementById('adminForm').addEventListener('submit', function(event) {
-  event.preventDefault(); // Evita el envío del formulario
+  event.preventDefault(); 
 
   var codigo = document.getElementById('codigo').value;
-  var codigoCorrecto = 'admin123'; // Código de administrador correcto
+  var codigoCorrecto = 'admin123'; 
   var email = document.getElementById('email').value;
   var password = document.getElementById('password').value;
 
@@ -124,7 +124,7 @@ document.getElementById('adminForm').addEventListener('submit', function(event) 
     body: formData
   }).then(response => response.text())
     .then(result => {
-      if (result.includes('Success')) { // Ajusta esto según el mensaje que devuelva tu PHP en caso de éxito
+      if (result.includes('Success')) { 
         Swal.fire({
           icon: 'success',
           title: 'Registro exitoso',
@@ -132,7 +132,7 @@ document.getElementById('adminForm').addEventListener('submit', function(event) 
           showConfirmButton: false,
           timer: 1000
         }).then(() => {
-          window.location.href = 'SignUpSuccess.php'; // Redirige después de mostrar la animación
+          window.location.href = 'SignUpSuccess.php'; 
         });
       } else {
         Swal.fire({

@@ -108,7 +108,7 @@ document.getElementById('userForm').addEventListener('submit', function(event) {
     body: formData
   }).then(response => response.text())
     .then(result => {
-      if (result.includes('Success')) { // Ajusta esto según el mensaje que devuelva tu PHP en caso de éxito
+      if (result.includes('Success')) { 
         Swal.fire({
           icon: 'success',
           title: 'Registro exitoso',
@@ -116,7 +116,7 @@ document.getElementById('userForm').addEventListener('submit', function(event) {
           showConfirmButton: false,
           timer: 1000
         }).then(() => {
-          window.location.href = 'SignUpSuccess.php'; // Redirige después de mostrar la animación
+          window.location.href = 'SignUpSuccess.php'; 
         });
       } else {
         Swal.fire({
