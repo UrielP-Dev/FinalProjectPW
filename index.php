@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="stylesjumbo.css">
     <title>Home</title>
     <style>
@@ -20,14 +18,14 @@
             background: url('/resoures/fondo.jpg') no-repeat center center fixed;
             background-size: cover;
         }
-        .navbar {
+        .sidebar {
             width: 300px;
             background-color: rgba(0, 170, 255, 1); 
             padding: 20px;
             overflow-y: auto;
             position: relative; 
         }
-        .navbar img {
+        .sidebar img {
             width: 100%;
             height: auto;
         }
@@ -40,43 +38,101 @@
         .jumbotron {
             padding: 2rem 1rem;
             margin-bottom: 20px;
-            background-color: rgba(233, 236, 239, 0.9); /* Color de fondo con transparencia */
+            background-color: rgba(233, 236, 239, 0.9);
             border-radius: 0.3rem;
-            height: 50vh;
+            min-height: 300px;
         }
         .jumbotron-content {
             text-align: center;
         }
+        .jumbotron h1 {
+            font-size: 2.5rem;
+        }
         .ad-container .jumbotron {
             padding: 1rem 1rem;
-            background-color: rgba(233, 236, 239, 0.9); /* Color de fondo con transparencia */
+            background-color: rgba(233, 236, 239, 0.9);
             border-radius: 0.3rem;
-            height: 20vh;
+            min-height: 200px;
+        }
+        .ad-container .jumbotron h2 {
+            font-size: 1.5rem;
         }
         footer {
             width: 100%;
-            background-color: rgba(0, 170, 255, 0.9); /* Color de fondo igual al navbar y header */
+            background-color: rgba(0, 170, 255, 0.9);
             text-align: center;
             padding: 1rem;
             position: relative;
             clear: both;
         }
+        .sidebar-toggle {
+            display: none;
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 991px) {
+            .container-fluid {
+                flex-direction: column;
+            }
+            .sidebar {
+                display: none;
+            }
+            .sidebar-toggle {
+                display: inline-block;
+            }
+            .content {
+                padding: 15px;
+            }
+            .jumbotron h1 {
+                font-size: 2rem;
+            }
+            .ad-container .jumbotron h2 {
+                font-size: 1.25rem;
+            }
+        }
+        
+        @media (max-width: 767px) {
+            .jumbotron {
+                padding: 1.5rem 1rem;
+                min-height: 250px;
+            }
+            .jumbotron h1 {
+                font-size: 1.75rem;
+            }
+            .jumbotron p {
+                font-size: 1rem;
+            }
+            .ad-container .jumbotron {
+                min-height: 180px;
+                margin-bottom: 15px;
+            }
+            .ad-container .jumbotron h2 {
+                font-size: 1.1rem;
+            }
+            .ad-container .jumbotron p {
+                font-size: 0.9rem;
+            }
+        }
     </style>
 </head>
 <body>
 <header class="p-3 mb-2 bg-primary text-white" style="background-color: rgba(0, 170, 255, 0.9);">
-  <div class="container">
+  <div class="container-fluid">
     <div class="d-flex flex-wrap align-items-center justify-content-between">
       <div class="d-flex align-items-center">
-        <img src="/resoures/logo.jpg" alt="logo" class="ml-2" style="height: 50px;">
-        <h1 class="ms-3 mb-0">GameZone</h1>
+        <button class="btn btn-outline-light me-2 sidebar-toggle" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarOffcanvas" aria-controls="sidebarOffcanvas">
+          <span class="navbar-toggler-icon"></span>☰
+        </button>
+        <img src="/resoures/logo.jpg" alt="logo" style="height: 50px;">
+        <h1 class="ms-2 mb-0 d-none d-md-block">GameZone</h1>
+        <h1 class="ms-2 mb-0 d-md-none" style="font-size: 1.5rem;">GameZone</h1>
       </div>
-      <div class="d-flex align-items-center">
-        <button type="button" class="btn btn-outline-light me-2" onclick="window.location.href = '/Access/login.php';">Login</button>
-        <button type="button" class="btn btn-outline-warning me-2" onclick="window.location.href = '/Access/signup.php';">Sign-up</button>
+      <div class="d-flex align-items-center flex-wrap gap-2">
+        <button type="button" class="btn btn-outline-light btn-sm" onclick="window.location.href = '/Access/login.php';">Login</button>
+        <button type="button" class="btn btn-outline-warning btn-sm" onclick="window.location.href = '/Access/signup.php';">Sign-up</button>
         <div class="btn-group">
-          <button type="button" class="btn btn-outline-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            Acerca de Nosotros
+          <button type="button" class="btn btn-outline-dark btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            Acerca de
           </button>
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#integrantesmodal">Integrantes</a></li>
@@ -88,6 +144,36 @@
   </div>
 </header>
 
+
+<!-- Offcanvas Sidebar for Mobile -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="sidebarOffcanvas" aria-labelledby="sidebarOffcanvasLabel" style="background-color: rgba(0, 170, 255, 1);">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title text-white" id="sidebarOffcanvasLabel">Juegos más vendidos</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div class="game-item mb-3">
+            <img src="/resoures/FINAL.avif" alt="Juego 1" class="img-fluid rounded">
+            <p class="text-white mt-2">FINAL FANTASY VII REBIRTH</p>
+        </div>
+        <div class="game-item mb-3">
+            <img src="/resoures/mario-vs-donkey-kong-logo-1.webp" alt="Juego 2" class="img-fluid rounded">
+            <p class="text-white mt-2">MARIO VS. DONKEY KONG</p>
+        </div>
+        <div class="game-item mb-3">
+            <img src="/resoures/fc24.jpg" alt="Juego 3" class="img-fluid rounded">
+            <p class="text-white mt-2">EA SPORTS FC 24</p>
+        </div>
+        <div class="game-item mb-3">
+            <img src="/resoures/mariokr.avif" alt="Juego 4" class="img-fluid rounded">
+            <p class="text-white mt-2">MARIO KART 8 DELUXE</p>
+        </div>
+        <div class="game-item mb-3">
+            <img src="/resoures/aGhopp3MHppi7kooGE2Dtt8C.avif" alt="Juego 5" class="img-fluid rounded">
+            <p class="text-white mt-2">Elden Ring</p>
+        </div>
+    </div>
+</div>
 
 <div class="container-fluid">
     <div class="content">
@@ -101,7 +187,7 @@
 
         <div class="row">
             <!-- Publicidad 1 -->
-            <div class="col-md-6">
+            <div class="col-12 col-md-6 mb-3">
                 <div class="ad-container">
                     <div class="jumbotron">
                         <div class="jumbotron-content">
@@ -114,7 +200,7 @@
             </div>
 
             <!-- Publicidad 2 -->
-            <div class="col-md-6">
+            <div class="col-12 col-md-6 mb-3">
                 <div class="ad-container">
                     <div class="jumbotron">
                         <div class="jumbotron-content">
@@ -127,7 +213,7 @@
             </div>
 
             <!-- Publicidad 3 -->
-            <div class="col-md-6">
+            <div class="col-12 col-md-6 mb-3">
                 <div class="ad-container">
                     <div class="jumbotron">
                         <div class="jumbotron-content">
@@ -140,7 +226,7 @@
             </div>
 
             <!-- Publicidad 4 -->
-            <div class="col-md-6">
+            <div class="col-12 col-md-6 mb-3">
                 <div class="ad-container">
                     <div class="jumbotron">
                         <div class="jumbotron-content">
@@ -194,41 +280,40 @@
         </div>
     </div>
 
-    <div class="navbar">
-        <h3 class="ms-3 mb-0">Juegos más vendidos</h3>
-        <div class="game-item">
-            <img src="/resoures/FINAL.avif" alt="Juego 1">
-            <p>FINAL FANTASY VII REBIRTH</p>
+    <div class="sidebar d-none d-lg-block">
+        <h3 class="text-white mb-3">Juegos más vendidos</h3>
+        <div class="game-item mb-3">
+            <img src="/resoures/FINAL.avif" alt="Juego 1" class="img-fluid rounded">
+            <p class="text-white mt-2">FINAL FANTASY VII REBIRTH</p>
         </div>
-        <div class="game-item">
-            <img src="/resoures/mario-vs-donkey-kong-logo-1.webp" alt="Juego 2">
-            <p>MARIO VS. DONKEY KONG</p>
+        <div class="game-item mb-3">
+            <img src="/resoures/mario-vs-donkey-kong-logo-1.webp" alt="Juego 2" class="img-fluid rounded">
+            <p class="text-white mt-2">MARIO VS. DONKEY KONG</p>
         </div>
-        <div class="game-item">
-            <img src="/resoures/fc24.jpg" alt="Juego 3">
-            <p>EA SPORTS FC 24</p>
+        <div class="game-item mb-3">
+            <img src="/resoures/fc24.jpg" alt="Juego 3" class="img-fluid rounded">
+            <p class="text-white mt-2">EA SPORTS FC 24</p>
         </div>
-        <div class="game-item">
-            <img src="/resoures/mariokr.avif" alt="Juego 4">
-            <p>MARIO KART 8 DELUXE</p>
+        <div class="game-item mb-3">
+            <img src="/resoures/mariokr.avif" alt="Juego 4" class="img-fluid rounded">
+            <p class="text-white mt-2">MARIO KART 8 DELUXE</p>
         </div>
-        <div class="game-item">
-            <img src="/resoures/aGhopp3MHppi7kooGE2Dtt8C.avif" alt="Juego 5">
-            <p>Elden Ring</p>
+        <div class="game-item mb-3">
+            <img src="/resoures/aGhopp3MHppi7kooGE2Dtt8C.avif" alt="Juego 5" class="img-fluid rounded">
+            <p class="text-white mt-2">Elden Ring</p>
         </div>
     </div>
 </div>
 
 <footer class="footer-container">
-        <div class="footer-content">
-            <p>&copy; <span id="current-year"></span> Derechos de autor. Todos los derechos reservados.</p>
-            <p>Equipo 6 </p>
-        </div>
+    <div class="footer-content">
+        <p>&copy; <span id="current-year"></span> Derechos de autor. Todos los derechos reservados.</p>
+        <p>Equipo 6</p>
     </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 <script>
-    // Script para obtener el año actual
     document.getElementById("current-year").textContent = new Date().getFullYear();
 </script>
 </body>

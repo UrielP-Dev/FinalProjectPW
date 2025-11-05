@@ -43,12 +43,60 @@ body {
 .jumbotron .btn {
     background-color: #33e0ff;
     color: white;
-   box-shadow: 0 0 5px cyan,
-   0 0 25px cyan;
+    box-shadow: 0 0 5px cyan, 0 0 25px cyan;
+    border: none;
+    padding: 10px 30px;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
 }
 
 .jumbotron .btn:hover {
-    box-shadow: 0 0 5px cyan,
-    0 0 25px cyan,0 0 50px cyan,
-    0 0 100px cyan, 0 0 200px cyan;
+    box-shadow: 0 0 5px cyan, 0 0 25px cyan, 0 0 50px cyan, 0 0 100px cyan, 0 0 200px cyan;
+    transform: scale(1.05);
+}
+
+/* Responsive Typography */
+@media (max-width: 991px) {
+    .jumbotron {
+        padding: 60px 20px;
+    }
+    
+    .jumbotron h1 {
+        font-size: 3rem;
+    }
+    
+    .jumbotron p {
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 767px) {
+    .jumbotron {
+        padding: 40px 15px;
+    }
+    
+    .jumbotron h1 {
+        font-size: 2rem;
+        margin-bottom: 15px;
+    }
+    
+    .jumbotron p {
+        font-size: 1rem;
+        margin-bottom: 15px;
+    }
+    
+    .jumbotron .btn {
+        padding: 8px 20px;
+        font-size: 0.95rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .jumbotron h1 {
+        font-size: 1.5rem;
+    }
+    
+    .jumbotron p {
+        font-size: 0.9rem;
+    }
 }
